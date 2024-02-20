@@ -7,7 +7,6 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.*;
 import org.springframework.batch.core.job.CompositeJobParametersValidator;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +28,7 @@ public class HelloWorldJob {
         return jobBuilderFactory.get("basicJob")
             .start(step1())
             .validator(validator())
-            .incrementer(new RunIdIncrementer())
+            .incrementer(new DailyJobTimestamper())
             .build();
     }
 
@@ -66,7 +65,7 @@ public class HelloWorldJob {
         var compositeValidator = new CompositeJobParametersValidator();
         var defaultValidator = new DefaultJobParametersValidator(
             new String[] {"fileName"},
-            new String[] {"name", "run.id"});
+            new String[] {"name", "run.id", "currentDate"});
         defaultValidator.afterPropertiesSet();
         compositeValidator.setValidators(List.of(
             new CustomParameterValidator(),
