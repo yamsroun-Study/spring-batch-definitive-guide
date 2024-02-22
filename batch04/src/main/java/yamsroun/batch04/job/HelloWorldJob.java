@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
 import yamsroun.batch04.listener.JobLoggerListener;
+import yamsroun.batch04.tasklet.GoodByeTasklet;
 import yamsroun.batch04.tasklet.HelloWorldTasklet;
 import yamsroun.batch04.validator.CustomParameterValidator;
 
@@ -27,12 +28,12 @@ public class HelloWorldJob {
 
     private final StepBuilderFactory stepBuilderFactory;
     private final JobBuilderFactory jobBuilderFactory;
-    private final HelloWorldTasklet helloWorldTasklet;
 
     @Bean
     public Job job() {
         return jobBuilderFactory.get("basicJob")
             .start(step1())
+            .next(step2())
             .validator(validator())
             .incrementer(new DailyJobTimestamper())
             .listener(new JobLoggerListener())
@@ -46,7 +47,15 @@ public class HelloWorldJob {
     public Step step1() {
         return stepBuilderFactory.get("step1")
             //.tasklet(helloWorldTasklet(null, null))
-            .tasklet(helloWorldTasklet)
+            .tasklet(new HelloWorldTasklet())
+            .build();
+    }
+
+    @Bean
+    public Step step2() {
+        return stepBuilderFactory.get("step2")
+            //.tasklet(helloWorldTasklet(null, null))
+            .tasklet(new GoodByeTasklet())
             .build();
     }
 

@@ -5,13 +5,12 @@ import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 
 import java.util.Map;
 
 @Slf4j
-public class HelloWorldTasklet implements Tasklet {
+public class GoodByeTasklet implements Tasklet {
 
     @Override
     public RepeatStatus execute(
@@ -20,13 +19,8 @@ public class HelloWorldTasklet implements Tasklet {
     ) {
         StepContext stepContext = context.getStepContext();
         Map<String, Object> jobParameters = stepContext.getJobParameters();
-        String name = (String) jobParameters.get("name");
-
-        ExecutionContext jobContext = stepContext.getStepExecution()
-            .getJobExecution()
-            .getExecutionContext();
-        jobContext.put("user.name", name);
-        log.info(">>> Hello, {}", name);
+        String fileName = (String) jobParameters.get("fileName");
+        log.info(">>> fileName = {}", fileName);
 
         return RepeatStatus.FINISHED;
     }
