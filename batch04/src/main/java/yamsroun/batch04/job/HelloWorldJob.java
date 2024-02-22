@@ -2,12 +2,12 @@ package yamsroun.batch04.job;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.job.CompositeJobParametersValidator;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
+import org.springframework.batch.core.listener.ExecutionContextPromotionListener;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +38,7 @@ public class HelloWorldJob {
             .listener(new JobLoggerListener())
             //.listener(new JobLogger2Listener()) //JobListenerFactoryBean을 사용하지 않아도 동작함
             //.listener(JobListenerFactoryBean.getListener(new JobLogger2Listener()))
+            .listener(promotionListener())
             .build();
     }
 
@@ -82,5 +83,12 @@ public class HelloWorldJob {
             defaultValidator
         ));
         return compositeValidator;
+    }
+
+    @Bean
+    public StepExecutionListener promotionListener() {
+        ExecutionContextPromotionListener listener = new ExecutionContextPromotionListener();
+        listener.setKeys(new String[] {"name"});
+        return listener;
     }
 }
