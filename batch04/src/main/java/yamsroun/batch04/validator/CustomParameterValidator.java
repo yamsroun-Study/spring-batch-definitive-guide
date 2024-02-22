@@ -1,4 +1,4 @@
-package yamsroun.batch04;
+package yamsroun.batch04.validator;
 
 import org.springframework.batch.core.*;
 import org.springframework.util.StringUtils;

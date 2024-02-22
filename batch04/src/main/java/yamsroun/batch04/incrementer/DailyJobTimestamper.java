@@ -1,4 +1,4 @@
-package yamsroun.batch04;
+package yamsroun.batch04.incrementer;
 
 import org.springframework.batch.core.*;
 

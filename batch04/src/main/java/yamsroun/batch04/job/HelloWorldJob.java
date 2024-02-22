@@ -1,4 +1,4 @@
-package yamsroun.batch04;
+package yamsroun.batch04.job;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +12,8 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import yamsroun.batch04.incrementer.DailyJobTimestamper;
+import yamsroun.batch04.validator.CustomParameterValidator;
 
 import java.util.List;
 
