@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.*;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.job.CompositeJobParametersValidator;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -13,8 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
-import yamsroun.batch04.listener.JobLogger2Listener;
 import yamsroun.batch04.listener.JobLoggerListener;
+import yamsroun.batch04.tasklet.HelloWorldTasklet;
 import yamsroun.batch04.validator.CustomParameterValidator;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class HelloWorldJob {
 
     private final StepBuilderFactory stepBuilderFactory;
     private final JobBuilderFactory jobBuilderFactory;
+    private final HelloWorldTasklet helloWorldTasklet;
 
     @Bean
     public Job job() {
@@ -34,7 +36,7 @@ public class HelloWorldJob {
             .validator(validator())
             .incrementer(new DailyJobTimestamper())
             .listener(new JobLoggerListener())
-            .listener(new JobLogger2Listener()) //JobListenerFactoryBean을 사용하지 않아도 동작함
+            //.listener(new JobLogger2Listener()) //JobListenerFactoryBean을 사용하지 않아도 동작함
             //.listener(JobListenerFactoryBean.getListener(new JobLogger2Listener()))
             .build();
     }
@@ -42,12 +44,13 @@ public class HelloWorldJob {
     @Bean
     public Step step1() {
         return stepBuilderFactory.get("step1")
-            .tasklet(helloWorldTasklet(null, null))
+            //.tasklet(helloWorldTasklet(null, null))
+            .tasklet(helloWorldTasklet)
             .build();
     }
 
-    @StepScope
-    @Bean
+    //@StepScope
+    //@Bean
     public Tasklet helloWorldTasklet(
         @Value("#{jobParameters['name']}") String name,
         @Value("#{jobParameters['fileName']}") String fileName
