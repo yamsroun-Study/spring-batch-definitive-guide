@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
+import yamsroun.batch04.listener.JobLoggerListener;
 import yamsroun.batch04.validator.CustomParameterValidator;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class HelloWorldJob {
             .start(step1())
             .validator(validator())
             .incrementer(new DailyJobTimestamper())
+            .listener(new JobLoggerListener())
             .build();
     }
 
