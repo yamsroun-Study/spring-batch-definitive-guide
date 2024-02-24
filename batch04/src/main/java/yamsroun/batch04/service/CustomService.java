@@ -10,4 +10,8 @@ public class CustomService {
     public void serviceMethod() {
         log.info(">>> Service method was called");
     }
+
+    public void serviceMethod2(String message) {
+        log.info(">>> {}", message);
+    }
 }
