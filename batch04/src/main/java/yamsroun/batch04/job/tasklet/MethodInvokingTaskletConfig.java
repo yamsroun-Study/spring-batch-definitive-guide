@@ -1,4 +1,4 @@
-package yamsroun.batch04.job;
+package yamsroun.batch04.job.tasklet;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -8,12 +8,11 @@ import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
 import yamsroun.batch04.service.CustomService;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class MethodInvokingTaskletConfig {
 
     private final JobBuilderFactory jobBuilderFactory;

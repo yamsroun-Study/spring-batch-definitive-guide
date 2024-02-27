@@ -1,4 +1,4 @@
-package yamsroun.batch04.job;
+package yamsroun.batch04.job.systemcommand;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,13 +8,12 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.step.tasklet.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
 
 @Slf4j
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class AdvancedSystemCommandJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;

@@ -1,4 +1,4 @@
-package yamsroun.batch04.job;
+package yamsroun.batch04.job.tasklet;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
 import yamsroun.batch04.listener.JobLoggerListener;
 import yamsroun.batch04.tasklet.GoodByeTasklet;
@@ -23,7 +22,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class HelloWorldJob {
 
     private final StepBuilderFactory stepBuilderFactory;
