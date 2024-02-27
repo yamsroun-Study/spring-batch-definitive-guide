@@ -7,8 +7,11 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
+import org.springframework.batch.repeat.CompletionPolicy;
+import org.springframework.batch.repeat.policy.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import yamsroun.batch04.incrementer.DailyJobTimestamper;
 
 import java.util.*;
 
@@ -23,14 +26,14 @@ public class ChunkBasedJobConfig {
     public Job chunkJob() {
         return jobBuilderFactory.get("chunkBasedJob")
             .start(chunkStep())
-            //.incrementer(new DailyJobTimestamper())
+            .incrementer(new DailyJobTimestamper())
             .build();
     }
 
     @Bean
     public Step chunkStep() {
         return stepBuilderFactory.get("chunkStep")
-            .<String, String>chunk(1000)
+            .<String, String>chunk(completionPolicy())
             .reader(itemReader())
             .writer(itemWriter())
             .build();
@@ -53,5 +56,15 @@ public class ChunkBasedJobConfig {
                 System.out.println("current item = " + item);
             }
         };
+    }
+
+    @Bean
+    public CompletionPolicy completionPolicy() {
+        CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
+        policy.setPolicies(new CompletionPolicy[] {
+            new TimeoutTerminationPolicy(3),
+            new SimpleCompletionPolicy(1000)
+        });
+        return policy;
     }
 }
