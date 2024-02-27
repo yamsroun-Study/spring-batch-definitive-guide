@@ -12,6 +12,7 @@ import org.springframework.batch.repeat.policy.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
+import yamsroun.batch04.job.chunk.policy.RandomChunkSizePolicy;
 
 import java.util.*;
 
@@ -33,7 +34,7 @@ public class ChunkBasedJobConfig {
     @Bean
     public Step chunkStep() {
         return stepBuilderFactory.get("chunkStep")
-            .<String, String>chunk(completionPolicy())
+            .<String, String>chunk(new RandomChunkSizePolicy())
             .reader(itemReader())
             .writer(itemWriter())
             .build();
