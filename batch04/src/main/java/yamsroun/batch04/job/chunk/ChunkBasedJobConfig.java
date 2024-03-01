@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
 import yamsroun.batch04.job.chunk.policy.RandomChunkSizePolicy;
+import yamsroun.batch04.listener.LoggingStepStartStopListener;
 
 import java.util.*;
 
@@ -37,12 +38,13 @@ public class ChunkBasedJobConfig {
             .<String, String>chunk(new RandomChunkSizePolicy())
             .reader(itemReader())
             .writer(itemWriter())
+            .listener(new LoggingStepStartStopListener())
             .build();
     }
 
     @Bean
     public ListItemReader<String> itemReader() {
-        int size = 100000;
+        int size = 10;
         List<String> items = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             items.add(UUID.randomUUID().toString());
