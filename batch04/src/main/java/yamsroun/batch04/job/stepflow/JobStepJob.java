@@ -6,17 +6,17 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.job.builder.FlowBuilder;
-import org.springframework.batch.core.job.flow.Flow;
+import org.springframework.batch.core.step.job.DefaultJobParametersExtractor;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
 
 @Slf4j
 @RequiredArgsConstructor
-//@Configuration
-public class FlowJob {
+@Configuration
+public class JobStepJob {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -54,8 +54,8 @@ public class FlowJob {
     }
 
     @Bean
-    public Flow preProcessFlow() {
-        return new FlowBuilder<Flow>("preProcessingFlow")
+    public Job preProcessingJob() {
+        return jobBuilderFactory.get("preProcessingJob")
             .start(loadFileStep())
             .next(loadCustomerStep())
             .next(updateStartStep())
@@ -74,7 +74,8 @@ public class FlowJob {
     @Bean
     public Step initializeBatch() {
         return stepBuilderFactory.get("initializeBatch")
-            .flow(preProcessFlow())
+            .job(preProcessingJob())
+            .parametersExtractor(new DefaultJobParametersExtractor())
             .build();
     }
 
