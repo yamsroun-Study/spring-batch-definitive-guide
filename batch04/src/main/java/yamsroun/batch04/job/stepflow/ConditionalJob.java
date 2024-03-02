@@ -25,8 +25,8 @@ public class ConditionalJob {
     @Bean
     public Tasklet passTasklet() {
         return (contribution, chunkContext) -> {
-            //return RepeatStatus.FINISHED;
-            throw new RuntimeException("This is a failure");
+            return RepeatStatus.FINISHED;
+            //throw new RuntimeException("This is a failure");
         };
     }
 
@@ -50,7 +50,7 @@ public class ConditionalJob {
     public Job job() {
         return jobBuilderFactory.get("conditionalJob")
             .start(firstStep())
-            .on("FAILED").end()
+            .on("FAILED").fail()
             .from(firstStep()).on("*").to(successStep())
             .end()
             .incrementer(new DailyJobTimestamper())
