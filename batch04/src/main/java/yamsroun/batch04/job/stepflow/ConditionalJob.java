@@ -10,13 +10,12 @@ import org.springframework.batch.core.job.flow.JobExecutionDecider;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.decider.RandomDecider;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
 
 @Slf4j
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class ConditionalJob {
 
     private final JobBuilderFactory jobBuilderFactory;
