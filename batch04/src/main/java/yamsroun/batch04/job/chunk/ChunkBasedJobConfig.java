@@ -10,7 +10,6 @@ import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.batch.repeat.CompletionPolicy;
 import org.springframework.batch.repeat.policy.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
 import yamsroun.batch04.job.chunk.policy.RandomChunkSizePolicy;
 import yamsroun.batch04.listener.LoggingStepStartStopListener;
@@ -18,7 +17,7 @@ import yamsroun.batch04.listener.LoggingStepStartStopListener;
 import java.util.*;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class ChunkBasedJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
