@@ -6,10 +6,12 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.flow.JobExecutionDecider;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import yamsroun.batch04.decider.RandomDecider;
 import yamsroun.batch04.incrementer.DailyJobTimestamper;
 
 @Slf4j
@@ -48,8 +50,9 @@ public class ConditionalJob {
     public Job job() {
         return jobBuilderFactory.get("conditionalJob")
             .start(firstStep())
-            .on("FAILED").to(failureStep())
-            .from(firstStep()).on("*").to(successStep())
+            .next(decider())
+            .from(decider()).on("FAILED").to(failureStep())
+            .from(decider()).on("*").to(successStep())
             .end()
             .incrementer(new DailyJobTimestamper())
             .build();
@@ -74,5 +77,10 @@ public class ConditionalJob {
         return stepBuilderFactory.get("failureStep")
             .tasklet(failTasklet())
             .build();
+    }
+
+    @Bean
+    public JobExecutionDecider decider() {
+        return new RandomDecider();
     }
 }
