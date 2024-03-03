@@ -5,6 +5,7 @@ import org.springframework.batch.core.configuration.annotation.DefaultBatchConfi
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
 import org.springframework.batch.support.DatabaseType;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -13,6 +14,9 @@ public class CustomBatchConfigurer extends DefaultBatchConfigurer {
 
     //@Qualifier("repositoryDataSource")
     private final DataSource dataSource;
+
+    //@Qualifier("batchTransactionManager")
+    private final PlatformTransactionManager transactionManager;
 
     @Override
     protected JobRepository createJobRepository() throws Exception {
@@ -23,5 +27,10 @@ public class CustomBatchConfigurer extends DefaultBatchConfigurer {
         factoryBean.setDataSource(dataSource);
         factoryBean.afterPropertiesSet();
         return factoryBean.getObject();
+    }
+
+    @Override
+    public PlatformTransactionManager getTransactionManager() {
+        return transactionManager;
     }
 }
