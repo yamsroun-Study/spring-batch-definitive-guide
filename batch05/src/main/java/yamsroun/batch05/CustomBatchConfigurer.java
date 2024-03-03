@@ -2,6 +2,8 @@ package yamsroun.batch05;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
+import org.springframework.batch.core.explore.JobExplorer;
+import org.springframework.batch.core.explore.support.JobExplorerFactoryBean;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
 import org.springframework.batch.support.DatabaseType;
@@ -32,5 +34,14 @@ public class CustomBatchConfigurer extends DefaultBatchConfigurer {
     @Override
     public PlatformTransactionManager getTransactionManager() {
         return transactionManager;
+    }
+
+    @Override
+    protected JobExplorer createJobExplorer() throws Exception {
+        JobExplorerFactoryBean factoryBean = new JobExplorerFactoryBean();
+        factoryBean.setDataSource(dataSource);
+        factoryBean.setTablePrefix("FOO_");
+        factoryBean.afterPropertiesSet();
+        return factoryBean.getObject();
     }
 }
