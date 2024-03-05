@@ -9,12 +9,11 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Slf4j
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class NoRunJobConfig {
 
     private final JobRepository jobRepository;
@@ -22,18 +21,18 @@ public class NoRunJobConfig {
 
     @Bean
     public Job job() {
-        return new JobBuilder("job", jobRepository)
+        return new JobBuilder("job")
             .start(step1())
             .build();
     }
 
     @Bean
     public Step step1() {
-        return new StepBuilder("step1", jobRepository)
+        return new StepBuilder("step1")
             .tasklet((contribution, chunkContext) -> {
                 log.info(">>> step1 ran!");
                 return RepeatStatus.FINISHED;
-            }, transactionManager)
+            })
             .build();
     }
 }
